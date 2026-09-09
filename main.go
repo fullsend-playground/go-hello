@@ -60,6 +60,10 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", healthHandler)
 	mux.HandleFunc("/greet", greetHandler)
+	mux.HandleFunc("/ready", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{"status": "ready"})
+	})
 
 	log.Printf("Starting server on :%s", port)
 	if err := http.ListenAndServe(":"+port, mux); err != nil {
