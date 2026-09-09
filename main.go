@@ -45,8 +45,13 @@ func greetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func readyHandler(w http.ResponseWriter, r *http.Request) {
+	resp := HealthResponse{
+		Status:    "ready",
+		Timestamp: time.Now().UTC().Format(time.RFC3339),
+		Version:   getVersion(),
+	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]bool{"ready": true})
+	json.NewEncoder(w).Encode(resp)
 }
 
 func getVersion() string {
