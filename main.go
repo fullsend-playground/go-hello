@@ -44,6 +44,11 @@ func greetHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
+func readyHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"ready": true})
+}
+
 func getVersion() string {
 	if v := os.Getenv("APP_VERSION"); v != "" {
 		return v
@@ -60,6 +65,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", healthHandler)
 	mux.HandleFunc("/greet", greetHandler)
+	mux.HandleFunc("/ready", readyHandler)
 
 	log.Printf("Starting server on :%s", port)
 	if err := http.ListenAndServe(":"+port, mux); err != nil {
