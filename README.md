@@ -38,3 +38,4 @@ make lint
 docker build -t go-hello .
 docker run -p 8080:8080 go-hello
 ```
+# signal fix v3 test
